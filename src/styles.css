@@ -1,15 +1,1 @@
-body{
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  background-color: #8ac8ff;
-  color: black;
-  margin: 0;
-  padding: 2rem;
-  display: flex;
-  justify-content: center;
-}
-h1{
-  color: rgb(17, 138, 214);
-}
-*{
-  box-sizing: border-box;
-}
+/* You can add global styles to this file, and also import other style files */

@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "angular-project": {
+    "new-cooking-catalog": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/angular-project",
+            "outputPath": "dist/new-cooking-catalog",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -59,10 +59,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "angular-project:build:production"
+              "buildTarget": "new-cooking-catalog:build:production"
             },
             "development": {
-              "buildTarget": "angular-project:build:development"
+              "buildTarget": "new-cooking-catalog:build:development"
             }
           },
           "defaultConfiguration": "development"
