@@ -25,7 +25,7 @@ export class RecipesEffects {
       // слушаем наш action поиска
       ofType(RecipesActions.searchRecipes), 
       
-      // debounceTime(300), 
+      debounceTime(300), 
       //отмена запроса при новом
       switchMap(({ searchTerm }) => {
         console.log('--- API Call triggered for:', searchTerm);
