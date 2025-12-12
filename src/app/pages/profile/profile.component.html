@@ -1,0 +1,17 @@
+<div class="container">
+  <h1>🔒 Профиль Пользователя</h1>
+
+  @if (currentUser$ | async; as user) {
+    <div class="profile-info">
+      <h2>Добро пожаловать, {{ user.email }}!</h2>
+      <p>Вы успешно вошли в систему.</p>
+      <p><strong>UID (Идентификатор Firebase):</strong> {{ user.uid }}</p>
+      <button (click)="onLogout()" class="logout-button">Выйти (Logout)</button>
+    </div>
+  }
+  @if (!(currentUser$ | async)) {
+    <div>
+      <p>Загрузка данных пользователя...</p>
+    </div>
+  }
+</div>

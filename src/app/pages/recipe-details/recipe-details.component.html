@@ -1,0 +1,83 @@
+<div class="details-container container my-5">
+
+  <button [routerLink]="['/recipes']" class="back-button btn btn-secondary mb-4">
+    &larr; Назад к каталогу
+  </button>
+
+  @if (error$ | async; as error) {
+    <div class="state-message error alert alert-danger mt-4">
+      Ошибка загрузки деталей: {{ error }}
+    </div>
+  }
+
+  @if (isLoading$ | async) {
+    <div class="state-message loading text-center py-5">
+      Loading recipe details...
+    </div>
+  }
+
+  <div *ngIf="selectedRecipe$ | async as recipe">
+    
+    <button 
+        class="btn btn-sm position-absolute z-index-10 border-0" 
+        (click)="toggleFavorite(recipe.id)"
+        style="position: absolute; top: 120px; right: 80px; z-index: 10;">
+        
+        @if (recipe.isFavorite) {
+            <span class="text-danger fs-3">♥</span> 
+        } @else {
+            <span class="text-secondary fs-3">♡</span> 
+        }
+    </button>
+      
+    <div class="item-details-card card shadow-lg">
+      <div class="row g-0">
+        
+        <div class="col-md-5 image-section">
+          <img [src]="recipe.image" alt="{{ recipe.title }}" class="item-image-details img-fluid rounded-start">
+        </div>
+        
+        <div class="col-md-7 info-section p-4 position-relative">
+          
+          <h1>{{ recipe.title }}</h1>
+          
+          <p class="category-tag badge bg-primary">
+            {{ (recipe.dishTypes ? recipe.dishTypes.join(', ') : 'Неизвестно') | uppercase }}
+          </p>
+          
+          <div class="price-rating my-3">
+            <span class="price-tag me-3">{{ (recipe.pricePerServing ?? 0) | currency }} / порция</span>
+          </div>
+          
+          <hr>
+          
+          <p class="description" [innerHTML]="recipe.summary"></p>
+          
+          <hr>
+          
+          <div class="additional-details">
+            <p><strong>🕒 Время готовки:</strong> {{ recipe.readyInMinutes }} минут</p>
+            <p><strong>🍽️ Порций:</strong> {{ recipe.servings }}</p>
+          </div>
+          
+          <button class="add-to-cart-button btn btn-success btn-lg mt-3">Готовить этот Рецепт</button>
+        </div>
+      </div>
+      
+      @if (recipe.instructions) {
+        <div class="p-4 instructions-section">
+          <h2 class="mt-4">Инструкции по приготовлению</h2>
+          <div [innerHTML]="recipe.instructions"></div>
+        </div>
+      }
+      
+    </div>
+  </div>
+  
+  @if (!(isLoading$ | async) && !(selectedRecipe$ | async)) {
+    <div class="state-message not-found text-center py-5">
+      <h2>404 - Рецепт Не Найден</h2>
+      <p>Запрошенный ID рецепта не найден в каталоге.</p>
+    </div>
+}
+</div>

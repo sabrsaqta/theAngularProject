@@ -1,0 +1,30 @@
+<div class="card shadow-sm h-100 position-relative">
+    
+    <button 
+        class="btn btn-sm position-absolute top-0 end-0 z-index-10 bg-light bg-opacity-75 rounded-circle border-0" 
+        (click)="toggleFavorite($event)">
+        
+        <span class="favorite-icon">
+            @if (recipe.isFavorite) {
+                <span class="text-danger fs-5">♥</span> } @else {
+                <span class="text-secondary fs-5">♡</span> }
+        </span>
+    </button>
+
+    <a [routerLink]="['/recipe', recipe.id]" class="text-decoration-none text-dark d-flex flex-column h-100">
+        
+        <img 
+            [src]="recipe.image" 
+            class="card-img-top object-fit-cover" 
+            [alt]="recipe.title"
+            loading="lazy"
+            style="height: 200px;"> <div class="card-body flex-grow-1 d-flex flex-column">
+            <h5 class="card-title fw-bold">{{ recipe.title }}</h5>
+            </div>
+
+        <div class="card-footer text-end border-0 bg-white">
+            <span class="btn btn-outline-primary btn-sm">Подробнее...</span>
+        </div>
+    </a>
+    
+</div>

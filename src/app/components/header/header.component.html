@@ -1,0 +1,54 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+  <div class="container-fluid container">
+    
+    <a class="navbar-brand fw-bold" [routerLink]="['/']">
+      🍳 Recipe App
+    </a>
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/home']" routerLinkActive="active">Главная</a>
+        </li>
+        
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/recipes']" routerLinkActive="active">Каталог</a>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav">
+        
+        @if (isLoggedIn$ | async) {
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/favorites']" routerLinkActive="active">❤️ Избранное</a>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              {{ (currentUserEmail$ | async) ?? 'Профиль' }}
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+              <li><a class="dropdown-item" [routerLink]="['/profile']">Настройки профиля</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" (click)="onLogout()">Выйти</a></li>
+            </ul>
+          </li>
+        } 
+        
+        @else {
+          <li class="nav-item">
+            <a class="btn btn-outline-light me-2" [routerLink]="['/login']">Войти</a>
+          </li>
+          <li class="nav-item">
+            <a class="btn btn-light" [routerLink]="['/signup']">Регистрация</a>
+          </li>
+        }
+      </ul>
+    </div>
+  </div>
+</nav>
