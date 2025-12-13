@@ -1,0 +1,3 @@
+<div *ngIf="!(connectivityService.isOnline$ | async)" class="offline-banner">
+  <p>⚠️ Вы сейчас офлайн. Используются кешированные данные.</p>
+</div>

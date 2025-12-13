@@ -14,7 +14,7 @@ export class ApiService {
   private http: HttpClient = inject(HttpClient);
   private favoritesService = inject(FavoritesService); //инъекция сервиса избранных
   private baseUrl: string = environment.externalApiUrl; 
-  private apiKey: string = 'e02d0686d65e4d24bd136ec9749d26a0';
+  private apiKey: string = '466adc5be15042439fb065f71e7900ea';
   constructor() { }
 
   searchRecipes(query: string, offset: number = 0): Observable<{ results: RecipeSearchResult[]; totalResults: number }> {
