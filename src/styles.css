@@ -11,10 +11,10 @@ body {
 html, body {
     height: 100%;
 }
-app-header{
+/* app-header{
   margin-top: 40px;
   display: block;
-}
+} */
 .app-wrapper {
     min-height: 100vh;
     display: flex;
