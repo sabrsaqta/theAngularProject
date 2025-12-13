@@ -74,6 +74,9 @@ export class RecipesEffects {
       
       switchMap(action => {
         const isAdding = action.type === RecipesActions.addFavorite.type;
+        const recipeId = action.recipeId;
+
+        console.log(`Effect: Starting ${isAdding ? 'ADD' : 'REMOVE'} for ID: ${recipeId}`);
         const serviceCall = isAdding 
                             ? this.favoritesService.addFavorite(action.recipeId)
                             : this.favoritesService.removeFavorite(action.recipeId);
@@ -81,6 +84,7 @@ export class RecipesEffects {
         return from(serviceCall).pipe(
           // успех - Firestore обновил данные
           map(() => {
+            console.log(`Effect: Firestore operation SUCCESS for ID: ${recipeId}`);
             // диспатчим Action успеха, и затем перезапускаем поиск в компоненте.
             return isAdding 
               ? RecipesActions.addFavoriteSuccess() 
@@ -88,6 +92,7 @@ export class RecipesEffects {
           }),
           // tap для перезапуска поиска
           tap(() => {
+            console.log('Effect: Re-dispatching search to update favorite list.');
              // для метки перезапуск поиска
              this.store.select(RecipesSelectors.selectRecipesState).pipe(
                 map(state => state.searchTerm),
@@ -99,6 +104,7 @@ export class RecipesEffects {
           }),
           // при ошибке
           catchError((error) => {
+            console.error(`Effect: Firestore operation FAILED for ID: ${recipeId}`, error);
             const errorMessage = 'Ошибка при работе с избранным.';
             return of(isAdding 
                       ? RecipesActions.addFavoriteFailure({ error: errorMessage }) 

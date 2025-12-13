@@ -45,7 +45,24 @@ export class RecipeDetailsComponent implements OnInit {
     ).subscribe();
   }
 
+  // toggleFavorite(recipeId: string): void {
+  //   console.log(`Toggling favorite status for recipe: ${recipeId}`);
+  // }
+
   toggleFavorite(recipeId: string): void {
-    console.log(`Toggling favorite status for recipe: ${recipeId}`);
+    this.selectedRecipe$.pipe(
+      filter((recipe): recipe is Recipe => !!recipe), 
+      take(1)
+    ).subscribe(recipe => {
+      if (recipe.isFavorite) {
+        // если уже избранное - удаляем
+        this.store.dispatch(RecipesActions.removeFavorite({ recipeId }));
+        console.log(`Action: REMOVE Favorite, ID: ${recipeId}`);
+      } else {
+        // если не избранное - добавляем
+        this.store.dispatch(RecipesActions.addFavorite({ recipeId }));
+        console.log(`Action: ADD Favorite, ID: ${recipeId}`);
+      }
+    });
   }
 }

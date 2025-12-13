@@ -1,0 +1,43 @@
+/* Контейнер страницы */
+.favorites-container {
+    padding: 30px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.favorites-container h1 {
+    color: #333;
+    font-size: 2.2em;
+    margin-bottom: 25px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+}
+
+/*(Grid)*/
+.recipe-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+    padding: 20px 0;
+}
+
+
+/* Сообщение о пустом списке */
+.empty-list-message {
+    padding: 40px;
+    text-align: center;
+    background-color: #f9f9f9;
+    border: 1px dashed #ccc;
+    border-radius: 8px;
+    color: #666;
+    font-size: 1.1em;
+    margin-top: 30px;
+}
+
+
+.loading-indicator {
+    text-align: center;
+    padding: 50px;
+    font-style: italic;
+    color: #999;
+}

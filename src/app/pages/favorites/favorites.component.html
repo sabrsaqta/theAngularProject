@@ -1,1 +1,24 @@
-<p>favorites works!</p>
+<div class="favorites-container">
+  <h1>⭐ Избранные Рецепты</h1>
+
+  <div *ngIf="isLoading" class="loading-indicator">
+    <p>Загрузка избранных рецептов...</p>
+    </div>
+
+  <ng-container *ngIf="favoriteRecipes$ | async as recipes">
+    
+    <div *ngIf="!isLoading && recipes.length === 0" class="empty-list-message">
+      <p>Список избранных рецептов пуст. Начните поиск и добавьте что-нибудь!</p>
+    </div>
+
+    <div *ngIf="recipes.length > 0" class="recipe-grid">
+      
+      <app-recipe-card 
+        *ngFor="let recipe of recipes; trackBy: trackByRecipeId" 
+        [recipe]="recipe">
+      </app-recipe-card>
+
+    </div>
+  </ng-container>
+
+</div>

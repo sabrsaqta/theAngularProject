@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { Auth, user } from '@angular/fire/auth';
 import { Firestore, collection, doc, docData, setDoc, deleteDoc, arrayUnion, arrayRemove } from '@angular/fire/firestore';
-import { Observable, switchMap, map } from 'rxjs';
+import { Observable, switchMap, map, of, startWith } from 'rxjs';
 
 export interface FavoriteRecipes {
   id: string;
@@ -24,20 +24,23 @@ export class FavoritesService {
       switchMap(user => {
         if (!user) {
           // если пользователь не вошел -> пустой массив
-          return new Observable<FavoriteRecipes | null>(subscriber => {
-             subscriber.next({ id: '', recipeIds: [] });
-             subscriber.complete();
-          });
+          
+          // return new Observable<FavoriteRecipes | null>(subscriber => {
+          //    subscriber.next({ id: '', recipeIds: [] });
+          //    subscriber.complete();
+          // });
+          return of(null);
         }
         
-        // создаем ссылку на документ пользователя в коллекции 'favorites'
+        // создаем ссылку на док пользователя в коллекции 'favorites'
         const favoritesRef = doc(this.firestore, 'favorites', user.uid);
         
-        // docData следит за изменениями в этом документе Firestore
+        // docData следит за изменениями в доке Firestore
         return docData(favoritesRef, { idField: 'id' }) as Observable<FavoriteRecipes | null>;
       }),
-      // Преобразуем объект FavoriteRecipes в чистый массив id
-      map(favoritesDoc => favoritesDoc?.recipeIds || [])
+      // объект FavoriteRecipes в чистый массив id
+      map(favoritesDoc => favoritesDoc?.recipeIds || []),
+      startWith([])
     );
   }
 
@@ -48,12 +51,13 @@ export class FavoritesService {
     const userId = this.auth.currentUser?.uid;
     if (!userId) {
       console.error('User not logged in.');
-      return;
+      return Promise.reject(new Error('User not logged in.'));
     }
     const favoritesRef = doc(this.firestore, 'favorites', userId);
     
     // Используем arrayUnion для атомарного добавления элемента в массив
-    await setDoc(favoritesRef, { recipeIds: arrayUnion(recipeId) }, { merge: true }); //запись в документ, arrayUnion для добавления если еще нет и без конфликтов
+    // await setDoc(favoritesRef, { recipeIds: arrayUnion(recipeId) }, { merge: true }); //запись в документ, arrayUnion для добавления если еще нет и без конфликтов
+    return setDoc(favoritesRef, { recipeIds: arrayUnion(recipeId) }, { merge: true });
   }
 
   // 2. Удалить рецепт из избранного
@@ -61,11 +65,12 @@ export class FavoritesService {
     const userId = this.auth.currentUser?.uid;
     if (!userId) {
       console.error('User not logged in.');
-      return;
+      return Promise.reject(new Error('User not logged in.'));;
     }
     const favoritesRef = doc(this.firestore, 'favorites', userId);
     
     // Используем arrayRemove для атомарного удаления элемента из массива
-    await setDoc(favoritesRef, { recipeIds: arrayRemove(recipeId) }, { merge: true }); //если есть, то arrayRemove удаляет из документа
+    // await setDoc(favoritesRef, { recipeIds: arrayRemove(recipeId) }, { merge: true }); //если есть, то arrayRemove удаляет из документа
+    return setDoc(favoritesRef, { recipeIds: arrayRemove(recipeId) }, { merge: true });
   }
 }

@@ -1,6 +1,6 @@
 import { Component, Input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RecipeSearchResult } from '../../../models/recipe.model';
+import { Recipe, RecipeSearchResult } from '../../../models/recipe.model';
 import { RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 import * as RecipesActions from '../../state/recipes/recipes.actions';
@@ -15,7 +15,7 @@ import * as RecipesActions from '../../state/recipes/recipes.actions';
 export class RecipeCardComponent {
   
   // принимает упрощенный объект рецепта из списка
-  @Input({ required: true }) recipe!: RecipeSearchResult;
+  @Input({ required: true }) recipe!: Recipe | RecipeSearchResult;
   
   private store = inject(Store);
 
