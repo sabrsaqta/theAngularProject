@@ -35,7 +35,7 @@
       @if (results.length > 0) {
         <h3 class="count-check my-4">Всего рецептов: {{ results.length }}</h3>
         
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 items-grid"> 
+        <div class="items-grid"> 
           @for (recipe of results; track recipe.id) {
             <div class="col">
               <app-recipe-card [recipe]="recipe" /> 

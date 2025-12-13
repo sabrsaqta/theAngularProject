@@ -24,7 +24,7 @@ export class ApiService {
 
     const params = new HttpParams()
         .set("query", query)
-        .set("number", "2")
+        .set("number", "4")
         .set("apiKey", this.apiKey);
 
     return this.http.get<{ results: RecipeSearchResult[]; totalResults: number }>(
