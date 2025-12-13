@@ -123,6 +123,37 @@ item-card img {
 }
 
 
+.pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    padding: 20px 0;
+    margin-top: 30px;
+    border-top: 1px solid #eee;
+}
+.btn-pagination {
+    background-color: #a9c5ee;
+    color: rgb(25, 25, 25);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.1s ease;
+    min-width: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.prev-btn {
+    padding-right: 25px;
+}
+.next-btn {
+    padding-left: 25px;
+}
 @keyframes spin {
   100% {
     transform: rotate(360deg);

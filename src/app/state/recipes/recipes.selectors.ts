@@ -10,6 +10,25 @@ export const selectSearchResults = createSelector(
   selectRecipesState,
   (state: RecipesState) => state.searchResults 
 );
+//для запроса
+export const selectSearchTerm = createSelector(
+  selectRecipesState,
+  (state: RecipesState) => state.searchTerm // берем строку из стейта
+);
+//для пагинации
+export const selectCurrentOffset = createSelector(
+  selectRecipesState,
+  (state: RecipesState) => state.currentOffset
+);
+
+export const selectTotalResults = createSelector(
+  selectRecipesState,
+  (state: RecipesState) => state.totalResults
+);
+export const selectResultsPerPage = createSelector(
+  selectRecipesState,
+  (state: RecipesState) => state.resultsPerPage
+);
 
 // получаем флаг загрузки списка
 export const selectListLoading = createSelector(

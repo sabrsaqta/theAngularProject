@@ -31,9 +31,12 @@ export class FavoritesComponent {
           this.isLoading = false;
           return of([]); 
         }
+        const uniqueRecipeIds = [...new Set(recipeIds)];
+        console.log(`FavoritesComponent (Data Check): Original IDs count: ${recipeIds.length}, Unique IDs count: ${uniqueRecipeIds.length}`);
+
 
         // для каждого айди создаем поток, который загружает детали
-        const detailRequests = recipeIds.map(id => 
+        const detailRequests = uniqueRecipeIds.map(id => 
           this.apiService.getRecipeDetails(id).pipe(
             // если запрос деталей одного рецепта падает, возвращаем null, чтобы не сломать весь поток
             catchError(error => {

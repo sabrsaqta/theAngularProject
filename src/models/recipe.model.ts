@@ -45,6 +45,9 @@ export interface RecipesState {
     searchTerm: string | null;   // текущее поисковое слово
     detailsLoading: boolean;
     detailsError: string | null;
+    currentOffset: number;    
+  totalResults: number;     
+  resultsPerPage: number;
 }
 
 export const initialRecipesState: RecipesState = {
@@ -55,5 +58,9 @@ export const initialRecipesState: RecipesState = {
   selectedRecipe: null,
   detailsLoading: false,
   detailsError: null,
-  searchTerm: null
+  searchTerm: null,
+
+  currentOffset: 0,   
+  totalResults: 0,    
+  resultsPerPage: 3,
 };

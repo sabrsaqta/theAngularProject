@@ -11,6 +11,10 @@ export interface RecipesState {
   listError: string | null;   // сообщение об ошибке при загрузке списка
   detailsError: string | null; // при загрузке детали
   searchTerm: string | null;
+
+  currentOffset: number;    // текущее смещение
+  totalResults: number;  // Общее количество результато
+  resultsPerPage: number; //Количество результатов на страницу
 }
 
 export const initialState: RecipesState = {
@@ -21,26 +25,36 @@ export const initialState: RecipesState = {
   listError: null,
   detailsError: null,
   searchTerm: null,
+
+  currentOffset: 0,
+  totalResults: 0,
+  resultsPerPage: 3,
 };
 
 export const recipesReducer = createReducer(
   initialState,
 
   //загрузка списка
-  on(RecipesActions.searchRecipes, (state, { searchTerm }) => ({
+  on(RecipesActions.searchRecipes, (state, { searchTerm, offset }) => ({
     ...state, 
     listLoading: true, // включаем спиннер
     listError: null,     // сброс ошибку
-    searchResults: [], // очищаем старые результаты
+    // searchResults: [], // очищаем старые результаты
+    // searchTerm: searchTerm, // сохраняем поисковый запрос
+    searchResults: searchTerm === state.searchTerm ? state.searchResults : [], // очищаем, только если новый запрос
     searchTerm: searchTerm, // сохраняем поисковый запрос
+    currentOffset: offset,
   })),
 
   //успешное получение результатов
-  on(RecipesActions.searchRecipesSuccess, (state, { results }) => ({
+  on(RecipesActions.searchRecipesSuccess, (state, { results, totalResults, currentOffset }) => ({
     ...state,
     searchResults: results, // записываем полученный список
     listLoading: false,       // выключаем спиннер
     listError: null,
+
+    totalResults: totalResults, // сохраняем общее количество
+    currentOffset: currentOffset,
   })),
 
   on(RecipesActions.searchRecipesFailure, (state, { error }) => ({
@@ -48,6 +62,12 @@ export const recipesReducer = createReducer(
     listLoading: false,
     listError: error, // записываем сообщение об ошибке
     searchResults: [], 
+  })),
+  on(RecipesActions.changePage, (state, { offset }) => ({
+      ...state,
+      listLoading: true, // включаем спиннер
+      listError: null,
+      currentOffset: offset, // новый offset
   })),
 
 

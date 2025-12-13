@@ -4,18 +4,24 @@ import { RecipeSearchResult, Recipe } from '../../../models/recipe.model';
 //поиск
 export const searchRecipes = createAction(
   '[Recipe Search] Search Recipes',
-  props<{ searchTerm: string }>() // передаем поисковый запрос
+  props<{ searchTerm: string; offset: number }>() // передаем поисковый запрос
 );
 
 export const searchRecipesSuccess = createAction(
   '[Recipe Search] Search Recipes Success',
-  props<{ results: RecipeSearchResult[] }>()
+  props<{ results: RecipeSearchResult[]; totalResults: number; currentOffset: number; }>()
 );
 
 export const searchRecipesFailure = createAction(
   '[Recipe Search] Search Recipes Failure',
   props<{ error: string }>()
 );
+//смена страницы
+export const changePage = createAction(
+  '[Recipe List] Change Page',
+  props<{ offset: number }>()
+);
+
 
 //детали
 export const loadRecipeDetails = createAction(

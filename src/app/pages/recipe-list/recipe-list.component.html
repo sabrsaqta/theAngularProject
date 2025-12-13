@@ -51,6 +51,29 @@
       }
       
     </div>
+
+    <div *ngIf="(totalResults$ | async) && (totalResults$ | async)! > (resultsPerPage$ | async)! && !(isLoading$ | async)" 
+     class="pagination-controls">
+  
+  <button 
+    (click)="goToPage('prev')" 
+    [disabled]="!(canGoBack$ | async)"
+    class="btn-pagination prev-btn">
+    ← Предыдущая
+  </button>
+  
+  <span class="page-info">
+    Страница {{currentPage$ | async}}
+  </span>
+
+  <button 
+    (click)="goToPage('next')" 
+    [disabled]="!(canGoForward$ | async)"
+    class="btn-pagination next-btn">
+    Следующая →
+  </button>
+
+</div>
     
   </div>
 </div>

@@ -1,7 +1,7 @@
 export const environment = {
   production: false,
   externalApiUrl: "https://api.spoonacular.com/",
-  spoonacularApiKey: '1d454b66e61d46a1ac5625e765d48796',
+  spoonacularApiKey: 'e02d0686d65e4d24bd136ec9749d26a0',
   firebase: {
     apiKey: "AIzaSyDGRwLUObQadG86pyIPC0-mWgiQL86eGsw",
     authDomain: "angular-catalog-auth.firebaseapp.com",

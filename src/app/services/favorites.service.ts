@@ -14,6 +14,7 @@ export interface FavoriteRecipes {
 export class FavoritesService {
   private firestore = inject(Firestore);
   private auth = inject(Auth);
+  private readonly LOCAL_FAVORITES_KEY = 'guest_favorites';
 
   //поток с избранными пользователя
   public favorites$!: Observable<string[]>;
@@ -24,7 +25,7 @@ export class FavoritesService {
       switchMap(user => {
         if (!user) {
           // если пользователь не вошел -> пустой массив
-          
+
           // return new Observable<FavoriteRecipes | null>(subscriber => {
           //    subscriber.next({ id: '', recipeIds: [] });
           //    subscriber.complete();
