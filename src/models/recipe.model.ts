@@ -46,8 +46,10 @@ export interface RecipesState {
     detailsLoading: boolean;
     detailsError: string | null;
     currentOffset: number;    
-  totalResults: number;     
-  resultsPerPage: number;
+    totalResults: number;     
+    resultsPerPage: number;
+
+    selectedType: string | null;
 }
 
 export const initialRecipesState: RecipesState = {
@@ -63,4 +65,6 @@ export const initialRecipesState: RecipesState = {
   currentOffset: 0,   
   totalResults: 0,    
   resultsPerPage: 3,
+
+  selectedType: null,
 };

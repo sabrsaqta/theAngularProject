@@ -15,6 +15,12 @@ export const selectSearchTerm = createSelector(
   selectRecipesState,
   (state: RecipesState) => state.searchTerm // берем строку из стейта
 );
+
+export const selectSelectedType = createSelector(
+  selectRecipesState,
+  (state: RecipesState) => state.selectedType
+)
+
 //для пагинации
 export const selectCurrentOffset = createSelector(
   selectRecipesState,

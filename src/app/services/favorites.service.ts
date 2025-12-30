@@ -20,6 +20,7 @@ export class FavoritesService {
   public favorites$!: Observable<string[]>;
 
   constructor() {
+    //спрашиваем у firebase, кто залогиген?
     this.favorites$ = user(this.auth).pipe(
       // свичмап ждет uid пользователя
       switchMap(user => {

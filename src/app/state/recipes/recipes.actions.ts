@@ -16,6 +16,12 @@ export const searchRecipesFailure = createAction(
   '[Recipe Search] Search Recipes Failure',
   props<{ error: string }>()
 );
+
+export const setDishType = createAction(
+  '[Recipe Search] Set Dish Type',
+  props<{ dishType: string }>(),
+)
+
 //смена страницы
 export const changePage = createAction(
   '[Recipe List] Change Page',

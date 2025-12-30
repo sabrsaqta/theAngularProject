@@ -15,6 +15,9 @@ export interface RecipesState {
   currentOffset: number;    // текущее смещение
   totalResults: number;  // Общее количество результато
   resultsPerPage: number; //Количество результатов на страницу
+
+  selectedType: string | null;
+
 }
 
 export const initialState: RecipesState = {
@@ -29,6 +32,8 @@ export const initialState: RecipesState = {
   currentOffset: 0,
   totalResults: 0,
   resultsPerPage: 3,
+
+  selectedType: null,
 };
 
 export const recipesReducer = createReducer(
@@ -63,6 +68,16 @@ export const recipesReducer = createReducer(
     listError: error, // записываем сообщение об ошибке
     searchResults: [], 
   })),
+
+
+  on(RecipesActions.setDishType, (state, { dishType}) => ({
+    ...state,
+    selectedType: dishType,
+    listLoading: true,
+    currentOffset: 0,
+  })),
+
+
   on(RecipesActions.changePage, (state, { offset }) => ({
       ...state,
       listLoading: true, // включаем спиннер

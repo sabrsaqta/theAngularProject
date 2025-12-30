@@ -17,16 +17,20 @@ export class ApiService {
   private apiKey: string = '330c6ecd6d7e4ed4ba839bf610631f17';
   constructor() { }
 
-  searchRecipes(query: string, offset: number = 0): Observable<{ results: RecipeSearchResult[]; totalResults: number }> {
+  searchRecipes(query: string, offset: number = 0, type: string | null = null): Observable<{ results: RecipeSearchResult[]; totalResults: number }> {
     if (!query || query.length < 2) {
         return of({ results: [], totalResults: 0 });
     }
 
-    const params = new HttpParams()
+    let params = new HttpParams()
         .set("query", query)
         .set("number", "3")
         .set("offset", offset.toString())
         .set("apiKey", this.apiKey);
+
+    if (type && type !== 'All Types'){
+      params = params.set("type", type.toLowerCase());
+    }
 
     return this.http.get<{ results: RecipeSearchResult[]; totalResults: number }>(
         `${this.baseUrl}recipes/complexSearch`,
@@ -43,7 +47,6 @@ export class ApiService {
         { params }
     ).pipe(
         withLatestFrom(this.favoritesService.favorites$),
-        
         map(([recipe, favoriteIds]) => {
             const favs: string[] = favoriteIds || []; 
 

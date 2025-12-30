@@ -21,9 +21,27 @@ import { debounceTime, distinctUntilChanged, map, take } from 'rxjs/operators';
 export class RecipeListComponent implements OnInit {
   
   private store = inject(Store<{ recipes: RecipesState }>);
+  readonly dishTypes: string[] = [
+    'All Types', 
+    'Main course', 
+    'Side dish', 
+    'Dessert', 
+    'Appetizer', 
+    'Salad', 
+    'Bread', 
+    'Breakfast', 
+    'Soup', 
+    'Beverage', 
+    'Sauce', 
+    'Marinade', 
+    'Fingerfood', 
+    'Snack', 
+    'Drink'
+  ];
   
   //форма поиска реакт
   searchControl = new FormControl(''); 
+  typeControl = new FormControl('All Types');
   
 
   searchResults$!: Observable<RecipeSearchResult[]>;
@@ -48,11 +66,19 @@ export class RecipeListComponent implements OnInit {
     this.totalResults$ = this.store.select(RecipesSelectors.selectTotalResults);
     this.resultsPerPage$ = this.store.select(RecipesSelectors.selectResultsPerPage);
 
+    //объединение потоков чтобы всегда были самые свежие данные в случае изменений
     const paginationData$ = combineLatest([
       this.currentOffset$,
       this.totalResults$,
       this.resultsPerPage$
     ]);
+    
+    this.typeControl.valueChanges.pipe(
+      distinctUntilChanged()
+    )
+    .subscribe((dishType: string | null) => {
+      this.store.dispatch(RecipesActions.setDishType({ dishType: dishType || 'All Types' }));
+    });
 
     this.canGoBack$ = this.currentOffset$.pipe(
       map(offset => offset > 0)

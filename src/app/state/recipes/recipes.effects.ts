@@ -9,7 +9,7 @@ import { RecipesState } from '../recipes/recipes.reducer';
 
 import { tap } from 'rxjs/operators';
 import { FavoritesService } from '../../services/favorites.service';
-import { Store } from '@ngrx/store';
+import { Action, Store } from '@ngrx/store';
 
 
 @Injectable()
@@ -25,11 +25,12 @@ export class RecipesEffects {
       // слушаем наш action поиска
       ofType(RecipesActions.searchRecipes), 
       
-      debounceTime(300), 
+      debounceTime(300),
+      withLatestFrom(this.store.select(RecipesSelectors.selectSelectedType)),
       //отмена запроса при новом
-      switchMap(({ searchTerm, offset }) => {
+      switchMap(([{ searchTerm, offset }, selectedType]) => {
         console.log('--- API Call triggered for:', searchTerm);
-        return this.apiService.searchRecipes(searchTerm, offset).pipe(
+        return this.apiService.searchRecipes(searchTerm, offset, selectedType).pipe(
           // при успехе диспатчим Success
           map(data => 
             RecipesActions.searchRecipesSuccess({ results: data.results, totalResults: data.totalResults, currentOffset: offset })
@@ -40,6 +41,20 @@ export class RecipesEffects {
             of(RecipesActions.searchRecipesFailure({ error: 'Ошибка поиска рецептов.' }))
           )
         );
+      })
+    )
+  );
+
+  setDishType$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(RecipesActions.setDishType),
+
+      withLatestFrom(this.store.select(RecipesSelectors.selectSearchTerm)),
+      map(([actions, searchTerm]): Action => {
+        if(!searchTerm) {
+          return { type: '[Recipe] No Search Active'};
+        }
+        return RecipesActions.searchRecipes({ searchTerm, offset: 0 });
       })
     )
   );
@@ -109,18 +124,6 @@ export class RecipesEffects {
               ? RecipesActions.addFavoriteSuccess() 
               : RecipesActions.removeFavoriteSuccess();
           }),
-          // tap для перезапуска поиска
-          // tap(() => {
-          //   console.log('Effect: Re-dispatching search to update favorite list.');
-          //    // для метки перезапуск поиска
-          //    this.store.select(RecipesSelectors.selectRecipesState).pipe(
-          //       map(state => state.searchTerm),
-          //       filter((term): term is string => !!term),
-          //       take(1)
-          //    ).subscribe(searchTerm => {
-          //       this.store.dispatch(RecipesActions.searchRecipes({ searchTerm }));
-          //    });
-          // }),
           tap(() => {
              this.store.select(RecipesSelectors.selectRecipesState).pipe(
                 map(state => ({ 

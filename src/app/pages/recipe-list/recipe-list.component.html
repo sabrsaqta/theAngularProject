@@ -7,7 +7,17 @@
         placeholder="Найти рецепты по названию..."
         [formControl]="searchControl" class="search-form form-control">
     </div>
+    <select [formControl]="typeControl" class="type-select">
+      <option *ngFor="let type of dishTypes" [value]="type">
+        {{ type }}
+      </option>
+    </select>
+<!-- [formControl]="searchControl": Это Property Binding (квадратные скобки). Мы передаем объект управления формой из нашего .ts файла прямо в <input>.
+ Теперь всё, что юзер пишет в поле, сразу летит в наш поток valueChanges.
 
+[recipe]="recipe": Здесь мы передаем данные из родительского компонента в дочерний (app-recipe-card).
+
+(click)="goToPage('prev')": Это Event Binding (круглые скобки). Реакция на действие пользователя. -->
     @if (error$ | async; as error) {
       <div class="alert alert-danger mt-4" role="alert">
         Ошибка загрузки: {{ error }}
